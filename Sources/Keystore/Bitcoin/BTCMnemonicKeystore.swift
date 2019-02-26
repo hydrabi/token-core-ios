@@ -62,6 +62,7 @@ public struct BTCMnemonicKeystore: Keystore, EncMnemonicKeystore, XPrvCrypto {
     meta = metadata
   }
 
+  // 导出私钥注意 以后需要修改
   // 黄楚升添加，导出私钥
   public func exportPrivateKey(mnemonic: String) throws -> String {
     guard let btcMnemonic = BTCMnemonic(words: mnemonic.split(separator: " "), password: "", wordListType: .english),
