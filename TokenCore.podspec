@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
     "SWIFT_OPTIMIZATION_LEVEL" => "-Owholemodule"
   }
 
-  s.dependency "CryptoSwift", "0.9.0"
+  s.dependency "CryptoSwift", ">= 0.10.0"
   s.dependency "BigInt", "3.0.0"
   s.dependency "GRKOpenSSLFramework"
 end
