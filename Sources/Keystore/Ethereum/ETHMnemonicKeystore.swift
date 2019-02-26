@@ -8,16 +8,16 @@
 
 import Foundation
 
-struct ETHMnemonicKeystore: ExportableKeystore, EncMnemonicKeystore, PrivateKeyCrypto {
-  let id: String
-  let version = 3
-  let address: String
-  let crypto: Crypto
-  let meta: WalletMeta
+public struct ETHMnemonicKeystore: ExportableKeystore, EncMnemonicKeystore, PrivateKeyCrypto {
+  public let id: String
+  public let version = 3
+  public let address: String
+  public let crypto: Crypto
+  public let meta: WalletMeta
   let encMnemonic: EncryptedMessage
   let mnemonicPath: String
 
-  init(password: String, mnemonic: String, path: String, metadata: WalletMeta, id: String? = nil) throws {
+  public init(password: String, mnemonic: String, path: String, metadata: WalletMeta, id: String? = nil) throws {
     self.id = id ?? ETHMnemonicKeystore.generateKeystoreId()
     meta = metadata
 
@@ -29,7 +29,7 @@ struct ETHMnemonicKeystore: ExportableKeystore, EncMnemonicKeystore, PrivateKeyC
     address = ethKey.address
   }
 
-  init(json: JSONObject) throws {
+  public init(json: JSONObject) throws {
     guard
       let cryptoJson = (json["crypto"] as? JSONObject) ?? (json["Crypto"] as? JSONObject),
       json["version"] as? Int == version,
@@ -53,7 +53,7 @@ struct ETHMnemonicKeystore: ExportableKeystore, EncMnemonicKeystore, PrivateKeyC
     }
   }
 
-  func toJSON() -> JSONObject {
+  public func toJSON() -> JSONObject {
     var json = getStardandJSON()
     json["mnemonicPath"] = mnemonicPath
     json["encMnemonic"] = encMnemonic.toJSON()
@@ -61,7 +61,7 @@ struct ETHMnemonicKeystore: ExportableKeystore, EncMnemonicKeystore, PrivateKeyC
     return json
   }
 
-  func serializeToMap() -> [String: Any] {
+  public func serializeToMap() -> [String: Any] {
     return [
       "id": id,
       "address": address,
