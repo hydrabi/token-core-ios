@@ -286,4 +286,8 @@ extension WalletManagerTests {
       XCTFail(error.localizedDescription)
     }
   }
+  
+  func testMyTest() {
+    let pKeyStr = EOSKey.privateKey(from: "sdfjsdlkfjsdjf")
+  }
 }

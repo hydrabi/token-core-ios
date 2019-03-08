@@ -9,7 +9,7 @@
 import Foundation
 import CoreBitcoin
 
-class EOSKey {
+public class EOSKey {
   private let btcKey: BTCKey
 
   var publicKey: String {
@@ -35,7 +35,7 @@ class EOSKey {
     return btcKey.eosCompactSignature(forHash: data)
   }
 
-  static func privateKey(from wif: String) -> [UInt8] {
+  public static func privateKey(from wif: String) -> [UInt8] {
     let wifBytes = (BTCDataFromBase58(wif) as Data).bytes
     return [UInt8].init(wifBytes[1..<wifBytes.count - 4])
   }
