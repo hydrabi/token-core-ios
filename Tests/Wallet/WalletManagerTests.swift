@@ -74,22 +74,22 @@ class WalletManagerTests: TestCase {
     }
   }
   
-  func testSameMnemonicSwitchOverrideIdentity() {
-    let mnemonic = "stock canoe swift boat level behave devote lemon heavy snow garage company"
-    do {
-      var meta = WalletMeta(chain: .btc, source: .mnemonic)
-      meta.segWit = .p2wpkh
-      meta.network = Network.mainnet
-      _ = try Identity.recoverIdentity(metadata: meta, mnemonic: mnemonic, password: TestData.password)
-      meta.segWit = .none
-      let wallet = try WalletManager.importFromMnemonic(mnemonic, metadata: meta, encryptBy: TestData.password, at: BIP44.btcMainnet)
-      XCTAssertNotNil(wallet)
-      _ = try WalletManager.switchBTCWalletMode(walletID: wallet.walletID, password: TestData.password, segWit: .p2wpkh)
-      XCTFail("Should throw an exception")
-    } catch {
-      XCTAssertEqual(AddressError.alreadyExist.localizedDescription, error.localizedDescription)
-    }
-  }
+//  func testSameMnemonicSwitchOverrideIdentity() {
+//    let mnemonic = "stock canoe swift boat level behave devote lemon heavy snow garage company"
+//    do {
+//      var meta = WalletMeta(chain: .btc, source: .mnemonic)
+//      meta.segWit = .p2wpkh
+//      meta.network = Network.mainnet
+//      _ = try Identity.recoverIdentity(metadata: meta, mnemonic: mnemonic, password: TestData.password)
+//      meta.segWit = .none
+//      let wallet = try WalletManager.importFromMnemonic(mnemonic, metadata: meta, encryptBy: TestData.password, at: BIP44.btcMainnet)
+//      XCTAssertNotNil(wallet)
+//      _ = try WalletManager.switchBTCWalletMode(walletID: wallet.walletID, password: TestData.password, segWit: .p2wpkh)
+//      XCTFail("Should throw an exception")
+//    } catch {
+//      XCTAssertEqual(AddressError.alreadyExist.localizedDescription, error.localizedDescription)
+//    }
+//  }
 
   func testFindByWalletID() {
     let mnemonic = "stock canoe swift boat level behave devote lemon heavy snow garage company"
@@ -132,6 +132,25 @@ extension WalletManagerTests {
     } catch let err {
       XCTAssertEqual(err.localizedDescription, MnemonicError.pathInvalid.localizedDescription)
     }
+  }
+  
+  func testImportFromMnemonicEmptyPath1() {
+    
+//      let wallet = try WalletManager.importEOS(from: TestData.mnemonic, accountName: "", permissions: [], metadata: WalletMeta(chain: .eos, source: .mnemonic), encryptBy: TestData.password, at: "")
+    //[TokenCore.KeyPair(privateKey: "5J1Q4X4ZbGgFBdAzYbmSiiYiX2xpizkkrYWyQb5yZJQM7c5BBJB", publicKey: "EOS5JTvn8z6pZrquXiLwnJeqTsNnVJRfEjXp8u7HqPaj8FrhxSn5g")]
+    let password = "11111111"
+    
+    let mnemonic = "auto refuse agree concert region fiction annual logic mimic title media exercise"
+    do {
+      let eosKeyStore = try EOSKeystore(password: password, mnemonic: mnemonic, path: BIP44.eos, permissions: [], metadata: WalletMeta(source: .newIdentity))
+      let keyPars = eosKeyStore.exportKeyPairs(password)
+      print(keyPars)
+      
+    }
+    catch {
+      
+    }
+    
   }
 
   func testImportFromMnemonicInvalidChain() {
@@ -177,6 +196,9 @@ extension WalletManagerTests {
   func testSetAccountName() {
     let wallet = try! WalletManager.importEOS(from: TestData.mnemonic, accountName: "", permissions: [], metadata: WalletMeta(chain: .eos, source: .mnemonic), encryptBy: TestData.password, at: BIP44.eos)
     let updatedWallet = try! WalletManager.setEOSAccountName(walletID: wallet.walletID, accountName: "newname")
+    
+    let crypto = Crypto(password: "123456789011", privateKey: Data.tk_random(of: 128).tk_toHexString(), cacheDerivedKey: true)
+    
     XCTAssertEqual("newname", updatedWallet.address)
   }
 

@@ -9,14 +9,14 @@
 import Foundation
 import CoreBitcoin
 
-struct EOSKeystore: Keystore, EncMnemonicKeystore {
+public struct EOSKeystore: Keystore, EncMnemonicKeystore {
   static let defaultVersion = 10001
   static let chainID = "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"
-  let id: String
-  let version = EOSKeystore.defaultVersion
-  var address = ""
-  let crypto: Crypto
-  var meta: WalletMeta
+  public let id: String
+  public let version = EOSKeystore.defaultVersion
+  public var address = ""
+  public let crypto: Crypto
+  public var meta: WalletMeta
 
   var encMnemonic: EncryptedMessage = EncryptedMessage(encStr: "", nonce: "")
   var mnemonicPath = ""
@@ -119,7 +119,7 @@ struct EOSKeystore: Keystore, EncMnemonicKeystore {
   }
 }
 
-private extension EOSKeystore {
+public extension EOSKeystore {
   /// Calculate and return [master, owner, active] keys.
   static func calculateDefaultKeys(mnemonic: Mnemonic, path: String) throws -> [([UInt8], String?)] {
     guard let btcMnemonic = BTCMnemonic(words: mnemonic.split(separator: " "), password: "", wordListType: .english),
@@ -161,7 +161,7 @@ private extension EOSKeystore {
 }
 
 extension EOSKeystore {
-  struct KeyPathPrivate {
+  public struct KeyPathPrivate {
     var encrypted: EncryptedMessage
     var publicKey: String
     var path: String?
@@ -202,7 +202,7 @@ extension EOSKeystore {
     }
   }
 
-  func toJSON() -> JSONObject {
+  public func toJSON() -> JSONObject {
     var json = getStardandJSON()
     json["keyPathPrivates"] = keyPathPrivates.map { $0.toJSON() }
     json["encMnemonic"] = encMnemonic.toJSON()
