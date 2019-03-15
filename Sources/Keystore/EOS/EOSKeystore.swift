@@ -98,7 +98,7 @@ public struct EOSKeystore: Keystore, EncMnemonicKeystore {
     return keyPath.encrypted.decrypt(crypto: crypto, password: password).tk_dataFromHexString()!.bytes
   }
 
-  func exportKeyPairs(_ password: String) -> [KeyPair] {
+  public func exportKeyPairs(_ password: String) -> [KeyPair] {
     return keyPathPrivates.map({ (keyPathPrivate) -> KeyPair in
       let decrypted = keyPathPrivate.encrypted.decrypt(crypto: crypto, password: password)
       let privateKey = EOSKey(privateKey: decrypted.tk_dataFromHexString()!.bytes)
@@ -106,7 +106,7 @@ public struct EOSKeystore: Keystore, EncMnemonicKeystore {
     })
   }
 
-  var publicKeys: [String] {
+  public var publicKeys: [String] {
     return keyPathPrivates.map { $0.publicKey }
   }
 

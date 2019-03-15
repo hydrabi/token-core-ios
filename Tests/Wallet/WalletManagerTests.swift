@@ -195,6 +195,8 @@ extension WalletManagerTests {
 
   func testSetAccountName() {
     let wallet = try! WalletManager.importEOS(from: TestData.mnemonic, accountName: "", permissions: [], metadata: WalletMeta(chain: .eos, source: .mnemonic), encryptBy: TestData.password, at: BIP44.eos)
+    let keyStore = wallet.keystore as! EOSKeystore
+    let pubKeys = keyStore.publicKeys
     let updatedWallet = try! WalletManager.setEOSAccountName(walletID: wallet.walletID, accountName: "newname")
     
     let crypto = Crypto(password: "123456789011", privateKey: Data.tk_random(of: 128).tk_toHexString(), cacheDerivedKey: true)
