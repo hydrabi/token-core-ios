@@ -207,7 +207,7 @@ extension Identity {
     switch metadata.chain! {
     case .btc:
       keystore = try BTCKeystore(password: password, wif: privateKey, metadata: metadata)
-    case .eth:
+    case .eth,.xrp:
       keystore = try ETHKeystore(password: password, privateKey: privateKey, metadata: metadata)
     case .eos:
       guard let accountName = accountName, !accountName.isEmpty else {
@@ -299,6 +299,9 @@ extension Identity {
       case .eos:
         meta.name = "EOS"
         return try importEOS(from: mnemonic, accountName: "", permissions: [], metadata: meta, encryptBy: password, at: BIP44.eosLedger)
+      case .xrp:
+        meta.name = "XRP"
+        return try importFromMnemonic(mnemonic, metadata: meta, encryptBy: password, at: BIP44.xrp)
       }
     }
   }
