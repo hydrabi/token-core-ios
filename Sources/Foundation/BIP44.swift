@@ -18,6 +18,7 @@ public struct BIP44 {
   public static let eos = "m/44'/194'"
 //  public static let slip48 = "m/48'/4'/0'/0'/0',m/48'/4'/1'/0'/0'"
   public static let eosLedger = "m/44'/194'/0'/0/0"
+  public static let xrp = "m/44'/144'/0'/0"
 
   static func path(for network: Network?, segWit: SegWit) -> String {
     let isMainnet = network?.isMainnet ?? true

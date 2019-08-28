@@ -124,7 +124,7 @@ extension Identity {
     switch metadata.chain! {
     case .btc:
       keystore = try BTCMnemonicKeystore(password: password, mnemonic: mnemonic, path: path, metadata: metadata)
-    case .eth:
+    case .eth,.xrp:
       keystore = try ETHMnemonicKeystore(password: password, mnemonic: mnemonic, path: path, metadata: metadata)
     case .eos:
       throw GenericError.operationUnsupported

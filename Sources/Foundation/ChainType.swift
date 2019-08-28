@@ -12,6 +12,7 @@ public enum ChainType: String {
   case eth = "ETHEREUM"
   case btc = "BITCOIN"
   case eos = "EOS"
+  case xrp = "XRP"
 
   public var privateKeySource: WalletMeta.Source {
     if self == .eth {
