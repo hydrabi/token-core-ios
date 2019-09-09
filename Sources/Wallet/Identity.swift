@@ -126,8 +126,10 @@ extension Identity {
       keystore = try BTCMnemonicKeystore(password: password, mnemonic: mnemonic, path: path, metadata: metadata)
     case .eth,.xrp:
       keystore = try ETHMnemonicKeystore(password: password, mnemonic: mnemonic, path: path, metadata: metadata)
-    case .eos:
-      throw GenericError.operationUnsupported
+//    case .eos:
+//      throw GenericError.operationUnsupported
+      default:
+        keystore = try BTCMnemonicKeystore(password: password, mnemonic: mnemonic, path: path, metadata: metadata)
     }
 
     return try append(keystore)
@@ -207,13 +209,15 @@ extension Identity {
     switch metadata.chain! {
     case .btc:
       keystore = try BTCKeystore(password: password, wif: privateKey, metadata: metadata)
-    case .eth,.xrp:
+    case .eth:
       keystore = try ETHKeystore(password: password, privateKey: privateKey, metadata: metadata)
     case .eos:
       guard let accountName = accountName, !accountName.isEmpty else {
         throw GenericError.paramError
       }
       keystore = try EOSLegacyKeystore(password: password, wif: privateKey, metadata: metadata, accountName: accountName)
+    default:
+      keystore = try BTCKeystore(password: password, wif: privateKey, metadata: metadata)
     }
     return try append(keystore)
   }
@@ -302,6 +306,18 @@ extension Identity {
       case .xrp:
         meta.name = "XRP"
         return try importFromMnemonic(mnemonic, metadata: meta, encryptBy: password, at: BIP44.xrp)
+      case .usdt:
+        meta.name = "USDT"
+        return try importFromMnemonic(mnemonic, metadata: meta, encryptBy: password, at: BIP44.path(for: meta.network, segWit: meta.segWit))
+      case .ltc:
+        meta.name = "LTC"
+        return try importFromMnemonic(mnemonic, metadata: meta, encryptBy: password, at: BIP44.path(for: meta.network, segWit: meta.segWit))
+      case .bch:
+        meta.name = "BCH"
+        return try importFromMnemonic(mnemonic, metadata: meta, encryptBy: password, at: BIP44.path(for: meta.network, segWit: meta.segWit))
+      case .trx:
+        meta.name = "TRX"
+        return try importFromMnemonic(mnemonic, metadata: meta, encryptBy: password, at: BIP44.path(for: meta.network, segWit: meta.segWit))
       }
     }
   }

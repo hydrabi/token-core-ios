@@ -37,7 +37,7 @@ public class BasicWallet {
       switch version {
       case 3:
         switch chainType {
-        case .eth,.xrp:
+        case .eth:
           if mnemonicKeystoreSource.contains(source) {
             self.keystore = try ETHMnemonicKeystore(json: json)
           } else {
@@ -47,6 +47,8 @@ public class BasicWallet {
           self.keystore = try BTCKeystore(json: json)
         case .eos:
           self.keystore = try EOSLegacyKeystore(json: json)
+        default:
+          self.keystore = try BTCKeystore(json: json)
         }
       case BTCMnemonicKeystore.defaultVersion:
         self.keystore = try BTCMnemonicKeystore(json: json)

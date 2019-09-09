@@ -46,7 +46,7 @@ public struct PrivateKeyValidator: Validator {
       } catch {
         return false
       }
-    case .xrp:
+    default:
       do {
         _ = try validateEth()
         return true
@@ -60,10 +60,12 @@ public struct PrivateKeyValidator: Validator {
     switch chain {
     case .btc:
       return try validateBtc()
-    case .eth,.xrp:
+    case .eth:
       return try validateEth()
     case .eos:
       return try validateEos()
+    default:
+      return try validateBtc()
     }
   }
 
